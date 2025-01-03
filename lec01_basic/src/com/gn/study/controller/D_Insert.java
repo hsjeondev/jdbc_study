@@ -1,52 +1,38 @@
-package com.gn.study.practice;
+package com.gn.study.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.gn.study.model.vo.Test;
-
-public class Select_List_vo {
+public class D_Insert {
 
 	public static void main(String[] args) {
-		
+		// 1. 작업용 객체 선언
 		Connection conn = null;
 		Statement stmt = null;
-		ResultSet rs = null;
 		
+		// 2. try~catch~finally
 		try {
-		
+			// 3. DriverManager 위치 찾기
 			Class.forName("org.mariadb.jdbc.Driver");
-			
+			// 4. 터널(Connection) 만들기
 			String url = "jdbc:mariadb://127.0.0.1:3306/jdbc_basic";
 			String id = "scott";
 			String pw = "tiger";
-			
 			conn = DriverManager.getConnection(url, id, pw);
-			
+			// 5. 자동차(Statement) 만들기
 			stmt = conn.createStatement();
-			
-			String sql = "SELECT t_no ,t_name ,t_date"
-						+ " FROM test";
-			
-			rs = stmt.executeQuery(sql);
-			
-			List<Test> list = new ArrayList<Test>();
-			while(rs.next()) {
-				Test test = new Test(rs.getInt("t_no"), rs.getString("t_name"), rs.getTimestamp("t_date").toLocalDateTime());
-				list.add(test);
-			}
-			
-			if(list.isEmpty()) {
-				System.out.println("데이터가 없습니다.");
+			// 6. 자동차에 쿼리문 실어보내기(문자 -> '')
+			//String sql = "INSERT INTO test(t_name) VALUES('테스트4')";
+			String sql = "INSERT INTO test "
+					+"VALUES(5 ,'테스트5' ,NOW())";
+			int result = stmt.executeUpdate(sql);
+			// 7. 결과 확인
+			if(result > 0) {
+				System.out.println("성공!!");
 			} else {
-				for(Test t : list) {
-					System.out.println(t);
-				}
+				System.out.println("실패!!");
 			}
 			
 		} catch (ClassNotFoundException e) {
@@ -55,7 +41,6 @@ public class Select_List_vo {
 			e.printStackTrace();
 		} finally {
 			try {
-				rs.close();
 				stmt.close();
 				conn.close();
 			} catch (SQLException e) {
