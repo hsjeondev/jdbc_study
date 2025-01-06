@@ -17,6 +17,68 @@ public class SongDao {
 	private static final String id = "scott";
 	private static final String pwd = "tiger";
 	
+	public Song choseSong(int select) {
+		Song song = null;
+		
+		String sql = "SELECT * "
+				+ " FROM wm_song "
+				+ " WHERE s_no = " + select;
+		String updateSql = "UPDATE wm_song "
+				+ " SET s_play_count = s_play_count+1 "
+				+ " WHERE s_no = " + select;
+		
+		try(Connection conn = DriverManager.getConnection(url, id, pwd);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql)) {
+			
+			Class.forName(className);
+			
+			if(rs.next()) {
+				int songNo = rs.getInt("s_no");
+				String songTitle = rs.getString("s_title");
+				String songArtist = rs.getString("s_artist");
+				int songPlayCount = rs.getInt("s_play_count");
+				String songLyrics = rs.getString("s_lyrics");
+				song = new Song(songNo, songTitle, songArtist, songPlayCount, songLyrics);
+				
+				stmt.executeUpdate(updateSql);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return song;
+	}
+	
+	public List<Song> songList() {
+		List<Song> list = new ArrayList<Song>();
+		
+		String sql = "SELECT s_no ,s_title ,s_artist "
+				+ " FROM wm_song ";
+		
+		try(Connection conn = DriverManager.getConnection(url, id, pwd);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql)) {
+			
+			Class.forName(className);
+			
+			while(rs.next()) {
+				int songNo = rs.getInt("s_no");
+				String songTitle = rs.getString("s_title");
+				String songArtist = rs.getString("s_artist");
+				Song song = new Song(songNo, songTitle, songArtist);
+				list.add(song);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
 	public List<Song> topTen() {
 		List<Song> list = new ArrayList<Song>();
 		
@@ -36,7 +98,8 @@ public class SongDao {
 				String songTitle = rs.getString("s_title");
 				String songArtist = rs.getString("s_artist");
 				int songPlayCount = rs.getInt("s_play_count");
-				Song song = new Song(songNo, songTitle, songArtist, songPlayCount);
+				String songLyrics = rs.getString("s_lyrics");
+				Song song = new Song(songNo, songTitle, songArtist, songPlayCount, songLyrics);
 				list.add(song);
 			}
 			

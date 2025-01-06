@@ -6,6 +6,14 @@ import com.gn.homework.model.vo.User;
 public class UserController {
 	private UserDao ud = new UserDao();
 	
+	public int changeName(String id, String pwd, String newName) {
+		return ud.changeName(id, pwd, newName);
+	}
+	
+	public String checkName(String id, String pwd) {
+		return ud.checkName(id, pwd);
+	}
+	
 	public int changePwd(String id, String pwd, String changePwd) {
 		return ud.changePwd(id, pwd, changePwd);
 	}

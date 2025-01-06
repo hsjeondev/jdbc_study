@@ -6,19 +6,38 @@ public class Song {
 	private String songTitle;
 	private String songArtist;
 	private int songPlayCount;
+	private String songLyrics;
 	
 	public Song() {}
 
-	public Song(int songNo, String songTitle, String songArtist, int songPlayCount) {
+	public Song(int songNo, String songTitle, String songArtist, int songPlayCount, String songLyrics) {
 		this.songNo = songNo;
 		this.songTitle = songTitle;
 		this.songArtist = songArtist;
 		this.songPlayCount = songPlayCount;
+		this.songLyrics = songLyrics;
+	}
+	
+	public Song(int songNo, String songTitle, String songArtist) {
+		super();
+		this.songNo = songNo;
+		this.songTitle = songTitle;
+		this.songArtist = songArtist;
+	}
+
+	public String getSongLyrics() {
+		return songLyrics;
+	}
+
+	public void setSongLyrics(String songLyrics) {
+		this.songLyrics = songLyrics;
 	}
 
 	public int getSongNo() {
 		return songNo;
 	}
+
+	
 
 	public void setSongNo(int songNo) {
 		this.songNo = songNo;
@@ -58,5 +77,8 @@ public class Song {
 	    return "제목 : " + songTitle + ", 아티스트 : " + songArtist + ", 재생 횟수 : " + songPlayCount;
 	}
 
+	public String printSongs() {
+		return songNo + "번 제목 : " + songTitle + ", 아티스트 : " + songArtist;
+	}
 	
 }

@@ -14,6 +14,53 @@ public class UserDao {
 	private static final String id = "scott";
 	private static final String pwd = "tiger";
 	
+	public int changeName(String userId, String userPwd, String newName) {
+		int result = 0;
+		
+		try(Connection conn = DriverManager.getConnection(url, id, pwd);
+				Statement stmt = conn.createStatement();) {
+				
+				Class.forName(className);
+				
+				String sql = "UPDATE wm_user "
+						+ " SET u_name = '"+newName+"' "
+						+ " WHERE u_id = '"+userId+"' AND u_pwd = '"+userPwd+"'";
+				
+				result = stmt.executeUpdate(sql);
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		
+		return result;
+	}
+	
+	public String checkName(String userId, String userPwd) {
+		String result = "";
+		
+		String sql = "SELECT * "
+				+ " FROM wm_user "
+				+ " WHERE u_id = '"+userId+"' AND u_pwd = '"+userPwd+"'";
+		
+		try(Connection conn = DriverManager.getConnection(url, id, pwd);
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql)) {
+				
+			Class.forName(className);
+				
+			if(rs.next()) {
+				
+				result = rs.getString("u_name");
+				
+			}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		
+		return result;
+	}
+	
 	public int changePwd(String userId, String userPwd, String changePwd) {
 		int result = 0;
 		

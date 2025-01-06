@@ -126,7 +126,7 @@ public class WatermelonMusicMenu {
 			scanner.nextLine();
 			
 			switch(select) {
-			case 1 :  break;
+			case 1 : playSong(); break;
 			case 2 : updateUserProfile(id, pwd); break;
 			case 3 : withdrawUser(id, pwd); break;
 			case 9 : System.out.println("로그아웃 되었습니다."); return;
@@ -136,24 +136,81 @@ public class WatermelonMusicMenu {
 	}
 	
 	public void playSong() {
+		List<Song> songs = new ArrayList<Song>();
 		
+		songs = sc.songList();
+		
+		System.out.println("곡 정렬");
+		if(songs.isEmpty() == false) {
+			for(int i = 0; i < songs.size(); i++) {
+				if(i == songs.size()-1) {
+					System.out.println(songs.get(i).printSongs() + "\n");
+				} else {
+					System.out.println(songs.get(i).printSongs());
+				}
+			}
+		} else {
+			System.out.println("곡이 없습니다.");
+		}
+		
+		
+		System.out.print("곡 번호 선택 : ");
+		int select = scanner.nextInt();
+		
+		Song choseSong = sc.choseSong(select);
+		
+		System.out.println("노래를 재생합니다.\n");
+		System.out.println("제목 : " + choseSong.getSongTitle() + " 가수 : " + choseSong.getSongArtist());
+		String lyrics = choseSong.getSongLyrics();
+		if (lyrics != null) {
+		    try {
+		        Thread.sleep(1000);
+		    } catch (InterruptedException e) {
+		        e.printStackTrace();
+		    }
+
+		    String[] lines = lyrics.split("\n");
+		    for (String line : lines) {
+		        System.out.println(line);
+		        try {
+		            Thread.sleep(2000);
+		        } catch (InterruptedException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		} else {
+		    try {
+		        Thread.sleep(1000);
+		    } catch (InterruptedException e) {
+		        e.printStackTrace();
+		    }
+
+		    for (int i = 0; i < 5; i++) {
+		        System.out.print("♪ ");
+		        try {
+		            Thread.sleep(1300);
+		        } catch (InterruptedException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		}
+
+		System.out.println("\n노래를 종료합니다.\n");
 	}
 	
 	public void updateUserProfile(String id, String pwd) {
 		System.out.println("\n=== 개인 정보 수정 ===");
 		
-		while(true) {
-			System.out.println("1. 비밀번호 변경");
-			System.out.println("2. 이름 변경");
-			System.out.print("메뉴 선택 : ");
-			int select = scanner.nextInt();
-			scanner.nextLine();
-			
-			switch(select) {
-			case 1 : changePwd(id, pwd); break;
-			case 2 : changeName(id, pwd); break;
-			default : System.out.println("화면에 있는 번호에서 선택해주세요."); break;
-			}
+		System.out.println("1. 비밀번호 변경");
+		System.out.println("2. 이름 변경");
+		System.out.print("메뉴 선택 : ");
+		int select = scanner.nextInt();
+		scanner.nextLine();
+		
+		switch(select) {
+		case 1 : changePwd(id, pwd); break;
+		case 2 : changeName(id, pwd); break;
+		default : System.out.println("화면에 있는 번호에서 선택해주세요."); break;
 		}
 	}
 	
@@ -189,8 +246,18 @@ public class WatermelonMusicMenu {
 		System.out.println("\n=== 이름 변경 ===");
 		
 		// 1. 이름 체크하고 보여주기
+		String oldName = uc.checkName(id, pwd);
+		System.out.println("현재 이름 : " + oldName);
 		// 2. 변경할 이름 받기
+		System.out.print("변경할 이름 : ");
+		String newName = scanner.nextLine();
 		// 3. 변경 후 결과 출력
+		int result = uc.changeName(id, pwd, newName);
+		if(result > 0) {
+			System.out.println("이름이 정상적으로 변경 되었습니다\n");
+		} else {
+			System.out.println("이름 변경 중 문제가 생겼습니다. 다시 시도해주세요.");
+		}
 	}
 	
 	public void withdrawUser(String id, String pwd) {
