@@ -20,6 +20,14 @@ public class Member {
 	
 	public Member() {}
 	
+	public Member(int memberNo, String memberId, String memberPw) {
+		this.memberNo = memberNo;
+		this.memberId = memberId;
+		this.memberPw = memberPw;
+		this.regDate = LocalDateTime.now();
+		this.modDate = LocalDateTime.now();
+	}
+	
 	public Member(String memberId, String memberPw, String memberName, String memberEmail,
 			String memberPhone, String memberGender) {
 		this.memberId = memberId;
@@ -129,6 +137,21 @@ public class Member {
 				+ ", 가입일=" + dtf.format(regDate) 
 				+ ", 수정일=" + dtf.format(modDate) + "]";
 	}
+	
+	public String printMember() {
+	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+	    
+	    return memberNo + " || " 
+	            + memberId + " || "
+	            + memberPw + " || "
+	            + memberName + " || "
+	            + memberEmail + " || "
+	            + memberPhone + " || "
+	            + memberGender + " || "
+	            + dtf.format(regDate) + " || "
+	            + dtf.format(modDate);
+	}
+
 	
 	
 }
